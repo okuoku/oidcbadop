@@ -2,10 +2,16 @@ const Provider = require("oidc-provider");
 const Koa = require("koa");
 const KoaMount = require("koa-mount");
 const KoaRouter = require("koa-router");
+const Jose = require("@panva/jose");
 
 const issroot = "http://localhost:3000/op";
 
+const keystore = new Jose.JWKS.KeyStore();
+keystore.generateSync("RSA", 4096, { alg: "RS256", use: "sig" });
+const keystore_jwks = keystore.toJWKS(true);
+
 const oidc_config = {
+    jwks: keystore_jwks,
     findAccount: (ctx, id) => {
         return {
             accountId: id,
@@ -47,6 +53,18 @@ async function passthrough(ctx, next){
     return oidc.interactionFinished(ctx.req, ctx.res, result);
 }
 
+async function result_filter(ctx, next){
+    await next();
+    if(ctx.oidc.route == "token"){
+        let token = ctx.response.body;
+        let valid_token = token.id_token;
+        let q = Jose.JWT.decode(valid_token);
+        q.exp = q.iat - 1;
+        let x = Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
+        token.id_token = x;
+    }
+}
+
 const app = new Koa();
 const router = new KoaRouter();
 
@@ -57,6 +75,8 @@ router.get("/passthrough", passthrough);
 app.use(router.routes())
    .use(router.allowedMethods());
 app.use(KoaMount("/op", oidc.app));
+
+oidc.use(result_filter);
 
 app.proxy = true;
 
