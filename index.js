@@ -92,6 +92,12 @@ async function chooser(ctx, next){
     return oidc.interactionFinished(ctx.req, ctx.res, result);
 }
 
+function base64jwt(obj){
+    const str = JSON.stringify(obj);
+    const orig = Buffer.from(str).toString("base64");
+    return orig.replace(/=/g,"");
+}
+
 // FIXME: Implement catchall
 
 async function result_filter(ctx, next){
@@ -104,12 +110,23 @@ async function result_filter(ctx, next){
             switch(q.modify){
                 case "expire":
                     q.exp = q.iat - 1;
+                    token.id_token = 
+                        Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
+                    break;
+                case "algnone":
+                    token.id_token =
+                        base64jwt({typ: "JWT", alg: "none"})
+                        +
+                        "."
+                        +
+                        base64jwt(q)
+                        +
+                        ".";
                     break;
                 default:
                     /* Do nothing */
                     break;
             }
-            token.id_token = Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
         }
     }
 }
