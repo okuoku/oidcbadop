@@ -3,6 +3,8 @@ const Koa = require("koa");
 const KoaMount = require("koa-mount");
 const KoaRouter = require("koa-router");
 const Jose = require("@panva/jose");
+const crypto = require("crypto");
+const CookieKeys = new Array(crypto.randomBytes(32));
 
 const issroot = "http://localhost:3000/op";
 
@@ -32,6 +34,11 @@ const oidc_config = {
     }],
     interactions: {
         url: (ctx, interaction) => Promise.resolve("/passthrough")
+    },
+    cookies: {
+        keys: CookieKeys,
+        short: {signed: true},
+        long: {signed: true}
     }
 };
 
