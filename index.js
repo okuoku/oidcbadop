@@ -98,18 +98,19 @@ async function result_filter(ctx, next){
     await next();
     if(ctx.oidc.route == "token"){
         let token = ctx.response.body;
-        let valid_token = token.id_token;
-        let q = Jose.JWT.decode(valid_token);
-        switch(q.modify){
-            case "expire":
-                q.exp = q.iat - 1;
-                break;
-            default:
-                /* Do nothing */
-                break;
+        const valid_token = token.id_token;
+        if(valid_token){
+            let q = Jose.JWT.decode(valid_token);
+            switch(q.modify){
+                case "expire":
+                    q.exp = q.iat - 1;
+                    break;
+                default:
+                    /* Do nothing */
+                    break;
+            }
+            token.id_token = Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
         }
-        let x = Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
-        token.id_token = x;
     }
 }
 
