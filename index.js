@@ -8,11 +8,15 @@ const crypto = require("crypto");
 const path = require("path");
 const DummyCookieKeys = new Array(crypto.randomBytes(32).toString("base64"));
 
-const issroot = "http://localhost:3000/op";
-
 const keystore = new Jose.JWKS.KeyStore();
 keystore.generateSync("RSA", 4096, { alg: "RS256", use: "sig" });
 const keystore_jwks = keystore.toJWKS(true);
+
+const hostname = process.env.PROJECT_DOMAIN ? process.env.PROJECT_DOMAIN + ".glitch.me" : "localhost";
+const proto = process.env.PROJECT_DOMAIN ? "https" : "http";
+const port = process.env.PORT ? process.env.PORT : 3000;
+
+const issroot = proto + "://" + hostname + ":" + port.toString() + "/op";
 
 const oidc_config = {
     jwks: keystore_jwks,
@@ -62,7 +66,7 @@ const ejs_config = {
     layout: "_base",
     viewExt: "html",
     cache: true,
-    debug: true
+    debug: false
 };
 
 const oidc = new Provider(issroot, oidc_config);
