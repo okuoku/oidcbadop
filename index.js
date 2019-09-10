@@ -16,7 +16,7 @@ const hostname = process.env.PROJECT_DOMAIN ? process.env.PROJECT_DOMAIN + ".gli
 const proto = process.env.PROJECT_DOMAIN ? "https" : "http";
 const port = process.env.PORT ? process.env.PORT : 3000;
 
-const issroot = proto + "://" + hostname + ":" + port.toString() + "/op";
+const issroot = proto + "://" + hostname + "/op";
 
 const oidc_config = {
     jwks: keystore_jwks,
