@@ -115,7 +115,7 @@ async function result_filter(ctx, next){
             let q = Jose.JWT.decode(valid_token);
             switch(q.modify){
                 case "expire":
-                    q.exp = q.iat - 1;
+                    q.exp = q.iat - 120;
                     token.id_token = 
                         Jose.JWT.sign(q, keystore.get({alg: "RS256"}));
                     break;
