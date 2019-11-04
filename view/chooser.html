@@ -1,3 +1,38 @@
+<div class="root" style="margin: auto">
+<div class="upper">
+<div class="notice-words">
+    <h1>Note: I'm a BAD OpenID Connect OP</h1>
+    <hr />
+    <p>Hi, I'm a malicious OpenID Connect OP that may return INVALID/crafted responce for you, for testing purpose.</p>
+    <p>
+    <b>Valid</b> : By clicking <a href="/gate/chooser/valid">valid</a> here, ANYONE will be authenticated as a single dummy user. No credentials are required.
+    </p>
+    <p>
+    <b>Expire</b> : <a href="/gate/chooser/expire">expire</a> will gives you always expired credential. Do you want see how your RP behave with expired credential? then choose this.
+    </p>
+    <p>
+    <b>Algnone</b> : The specially crafted <a href="/gate/chooser/algnone">algnone</a> link will gives you alg = <b>none</b> JWT which gives no protection against modification. Any serious RP should reject this. 
+    </p>
+    <hr />
+    <p>
+    As I'll give valid credentials for anyone, connecting with this OP will make a sort-of security hole. Obviously you shouldn't connect this on any production environment.
+    </p>
+    <p>
+    To connect with this OP, use following parameters; client_id = testing, client_secret = testing, redirect URI = (any)
+    </p>
+    <p>
+    Discovery URI: https://oidcbadop.glitch.me/op/.well-known/openid-configuration
+    </p>
+</div>
+<div class="notice-board">
+    <img src="https://raw.githubusercontent.com/okuoku/oidcbadop/4f65e0b9d3775074d2ae043f6818353e5e922e3d/rsrc/test191104l1.png" height="430px" width="302px" />
+</div>
+</div>
+<div class="lower">
+<div class="choice">
 <a href="/gate/chooser/valid">valid</a><br />
 <a href="/gate/chooser/expire">expire</a><br />
 <a href="/gate/chooser/algnone">algnone</a>
+</div>
+</div>
+</div>
