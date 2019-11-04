@@ -27,4 +27,4 @@ ToDo / FIXME
 - Externally controllable modification mode for test automation.
 - More modification modes. Perhaps `Expire` can be 1 sec depth.
 - Support more auth flow, especially Implicit Flow.
-
+- Persistent user-id and GDPR

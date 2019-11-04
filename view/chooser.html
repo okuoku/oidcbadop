@@ -3,20 +3,20 @@
 <div class="notice-words">
     <h1>Note: I'm a BAD OpenID Connect OP</h1>
     <hr />
-    <p>Hi, I'm a malicious OpenID Connect OP that may return INVALID/crafted responce for you, for testing purpose.</p>
-    <p>Check <a href="https://github.com/okuoku/oidcbadop/">GitHub repository</a> for details.</p>
+    <p>Hi, I'm a malicious OpenID Connect OP that may return crafted responce for you, for testing purpose.</p>
+    <p>Check <a href="https://github.com/okuoku/oidcbadop/">my GitHub repository</a> for details.</p>
     <p>
-    <b>Valid</b> : By clicking <a href="/gate/chooser/valid">valid</a> here, ANYONE will be authenticated as a single dummy user. No credentials are required.
+    <b>Valid</b> : By clicking <a href="/gate/chooser/valid">valid</a> here, ANYONE will be authenticated as a single dummy user. No additional credentials are required.
     </p>
     <p>
-    <b>Expire</b> : <a href="/gate/chooser/expire">expire</a> will gives you always expired credential. Do you want see how your RP behave with expired credential? then choose this.
+    <b>Expired</b> : <a href="/gate/chooser/expire">expire</a> link will give you always-expired credential. Do you want see how your RP behave with expired credential? then choose this.
     </p>
     <p>
-    <b>Algnone</b> : The specially crafted <a href="/gate/chooser/algnone">algnone</a> link will gives you alg = <b>none</b> JWT which gives no protection against modification. Any serious RP should reject this. 
+    <b>Algnone</b> : The specially crafted <a href="/gate/chooser/algnone">algnone</a> link will gives you alg = <b>none</b> JWT which gives no protection against modification. Any serious RP should reject this, because we don't list the alg as valid JWT supported alg. 
     </p>
     <hr />
     <p>
-    As I'll give valid credentials for anyone, connecting with this OP will make a sort-of security hole. Obviously you shouldn't connect this on any production environment.
+    As I'll give valid credentials for anyone, connecting with this OP will make a sort-of security hole. Obviously you shouldn't connect with this OP on any production environment.
     </p>
     <p>
     To connect with this OP, use following parameters; client_id = testing, client_secret = testing, redirect URI = (any)
