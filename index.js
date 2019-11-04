@@ -6,6 +6,7 @@ const KoaEjs = require("koa-ejs");
 const Jose = require("@panva/jose");
 const crypto = require("crypto");
 const path = require("path");
+const VolatileAdapter = require("./volatileadapter.js");
 const DummyCookieKeys = new Array(crypto.randomBytes(32).toString("base64"));
 
 const keystore = new Jose.JWKS.KeyStore();
@@ -14,11 +15,12 @@ const keystore_jwks = keystore.toJWKS(true);
 
 const hostname = process.env.PROJECT_DOMAIN ? process.env.PROJECT_DOMAIN + ".glitch.me" : "localhost";
 const proto = process.env.PROJECT_DOMAIN ? "https" : "http";
-const port = process.env.PORT ? process.env.PORT : 3000;
+const port = process.env.PORT ? process.env.PORT : 4000;
 
 const issroot = proto + "://" + hostname + "/op";
 
 const oidc_config = {
+    adapter: VolatileAdapter,
     jwks: keystore_jwks,
     findAccount: (ctx, id) => {
         return {
@@ -152,4 +154,4 @@ app.use(KoaMount("/op", oidc.app));
 
 app.proxy = true;
 
-app.listen(3000);
+app.listen(port);
